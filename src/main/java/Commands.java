@@ -26,6 +26,7 @@ public class Commands {
     }
 
     public static String echoCommand(String args){
+        System.out.println(args);
         return args;
     }
 
