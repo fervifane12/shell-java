@@ -42,7 +42,7 @@ public class Commands {
             System.out.println(output);
             return output;
         } catch (IllegalArgumentException e){
-            output = args + ": command not found";
+            output = args + ": not found";
             System.out.println(output);
             return output;
         }
