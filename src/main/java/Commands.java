@@ -5,14 +5,16 @@ public class Commands {
 
     public static void runCommand(String input){
 
-        String command = null;
+        String command;
         String args = null;
 
-        if (input.indexOf(" ") != -1){
+        if (input.contains(" ")){
             String[] text = input.split(" ", 2);
             command = text[0];
             args = text[1];
-        } else {command = input;}
+        } else {
+            command = input;
+        }
 
         switch (command.toLowerCase()){
 
@@ -22,11 +24,28 @@ public class Commands {
             case "echo":
                 echoCommand(args);
                 break;
+            case "type":
+                typeCommand(args);
+                break;
 
             default:
                 System.out.println(input + ": command not found");
         }
 
+    }
+
+    private static String typeCommand(String args) {
+        String output;
+        try{
+            CommandList c = CommandList.valueOf(args.toUpperCase());
+            output = args + " is a shell builtin";
+            System.out.println(output);
+            return output;
+        } catch (IllegalArgumentException e){
+            output = args + ": command not found";
+            System.out.println(output);
+            return output;
+        }
     }
 
 
