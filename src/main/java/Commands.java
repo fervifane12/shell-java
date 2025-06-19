@@ -5,9 +5,14 @@ public class Commands {
 
     public static void runCommand(String input){
 
-        String[] text = input.split(" ", 2);
-        String command = text[0];
-        String args = text[1];
+        String command = null;
+        String args = null;
+
+        if (input.indexOf(" ") != -1){
+            String[] text = input.split(" ", 2);
+            command = text[0];
+            args = text[1];
+        } else {command = input;}
 
         switch (command.toLowerCase()){
 
@@ -23,6 +28,7 @@ public class Commands {
         }
 
     }
+
 
     public static String echoCommand(String args){
         System.out.println(args);
