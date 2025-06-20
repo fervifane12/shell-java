@@ -51,7 +51,6 @@ public class Commands {
             String[] pathList = pathEnv.split(":"); // Splits the list in directories
 
             for (String directory : pathList) { // Loops in the dirs
-                System.out.println(directory);
                 File file = new File(directory, args); // Creates a file in the dir
                 if (file.exists() && file.canExecute()) { // Check if exists and if it's executable
                     output = args + " is " + file.getAbsolutePath();
