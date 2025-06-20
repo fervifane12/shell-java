@@ -48,7 +48,7 @@ public class Commands {
             }
 
             String pathEnv = System.getenv("PATH"); // Draw the list of the paths where the commands are usually located
-            String[] pathList = pathEnv.split(";"); // Splits the list in directories
+            String[] pathList = pathEnv.split(":"); // Splits the list in directories
 
             for (String directory : pathList) { // Loops in the dirs
                 System.out.println(directory);
