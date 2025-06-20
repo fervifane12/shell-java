@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.Objects;
 
 public class Commands {
@@ -37,10 +38,32 @@ public class Commands {
     private static String typeCommand(String args) {
         String output;
         try{
-            CommandList c = CommandList.valueOf(args.toUpperCase());
-            output = args + " is a shell builtin";
+
+            for (CommandList commandList : CommandList.values()){
+                if (commandList.name().equalsIgnoreCase(args)){
+                    output = args + " is a shell builtin";
+                    System.out.println(output);
+                    return output;
+                }
+            }
+
+            String pathEnv = System.getenv("PATH"); // Draw the list of the paths where the commands are usually located
+            String[] pathList = pathEnv.split(";"); // Splits the list in directories
+
+            for (String directory : pathList) { // Loops in the dirs
+                System.out.println(directory);
+                File file = new File(directory, args); // Creates a file in the dir
+                if (file.exists() && file.canExecute()) { // Check if exists and if it's executable
+                    output = args + " is " + file.getAbsolutePath();
+                    System.out.println(output);
+                    return output;
+                }
+            }
+
+            output = args + ": not found";
             System.out.println(output);
             return output;
+
         } catch (IllegalArgumentException e){
             output = args + ": not found";
             System.out.println(output);
