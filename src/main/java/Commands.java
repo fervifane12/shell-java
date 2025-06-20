@@ -3,7 +3,6 @@ import java.util.Objects;
 
 public class Commands {
 
-
     public static void runCommand(String input){
 
         String command;
@@ -32,7 +31,6 @@ public class Commands {
             default:
                 System.out.println(input + ": command not found");
         }
-
     }
 
     private static String typeCommand(String args) {
