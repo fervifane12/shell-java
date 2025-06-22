@@ -47,10 +47,7 @@ public class Commands {
 
     private static void runFile(String command, String args) throws IOException {
         String[] commandsPath = getCommandsPath(command);
-
-        if (args.trim().contains(" ")){
-            args = command + Arrays.toString(args.trim().split("\\s+"));
-        }
+        args = command + " " + args;
 
         for (String path : commandsPath){
             File file = new File(path, command);
