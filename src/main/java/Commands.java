@@ -1,6 +1,4 @@
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 
 public class Commands {
@@ -42,25 +40,36 @@ public class Commands {
         }catch (Exception e){
             return args + ": not found";
         }
-
         return null;
     }
 
     private static void runFile(String command, String args) throws IOException {
         String[] commandsPath = getCommandsPath(command);
-        args = command + " " + args;
 
         for (String path : commandsPath){
             File file = new File(path, command);
+            if (file.canExecute() && file.exists()){
+                ProcessBuilder processBuilder = new ProcessBuilder(command, path);
+                try{
+                    Process process = processBuilder.start();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(
+                            process.getInputStream()));
+                    String line;
 
-            if (file.exists() && file.canExecute()) {
-                path = path+command;
-                ProcessBuilder processBuilder = new ProcessBuilder(path, args);
-                Process process = processBuilder.start();
-                String output = process.getOutputStream().toString();
-                System.out.println(output);
+                    while ((line=reader.readLine())!= null){
+                        System.out.println(line);
+                    }
+
+                    reader.close();
+                    
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
+
+
     }
 
     private static String typeCommand(String args) {
