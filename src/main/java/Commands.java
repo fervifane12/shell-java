@@ -72,7 +72,7 @@ public class Commands {
     }
 
     private static List<String> listArgs(String command, String args){
-        if (!args.isEmpty()){
+        if (args!=null){
             List<String> commandList = new ArrayList<>();
             commandList.add(command);
             for (String arg : args.trim().split("\\s+")){
