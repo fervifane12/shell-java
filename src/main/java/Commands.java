@@ -49,7 +49,6 @@ public class Commands {
         for (String path : commandsPath){
             File file = new File(path, command);
             if (file.canExecute() && file.exists()){
-                command = command + " " + args;
                 ProcessBuilder processBuilder = new ProcessBuilder(command, path);
                 try{
                     Process process = processBuilder.start();
