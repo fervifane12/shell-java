@@ -56,6 +56,7 @@ public class Commands {
             File file = new File(path, command);
 
             if (file.exists() && file.canExecute()) {
+                System.out.println(args);
                 path = path+command;
                 ProcessBuilder processBuilder = new ProcessBuilder(path, args);
                 processBuilder.start();
