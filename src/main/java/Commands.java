@@ -58,17 +58,19 @@ public class Commands {
                         System.out.println(line);
                     }
 
-                    reader.close();
 
+                    reader.close();
+                    System.out.println("M1");
                 }
                 catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
+                System.out.println("M2");
                 return command + ": not found";
             }
         }
-
+        System.out.println("M3");
         return command + ": not found";
 
     }
@@ -82,6 +84,7 @@ public class Commands {
             }
             return commandList;
         }
+        System.out.println("M3.5");
 
         return List.of();
     }
