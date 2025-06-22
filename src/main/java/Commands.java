@@ -64,6 +64,8 @@ public class Commands {
                 catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else {
+                return command + ": not found";
             }
         }
 
