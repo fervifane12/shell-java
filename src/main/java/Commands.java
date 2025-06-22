@@ -36,13 +36,8 @@ public class Commands {
     }
 
     private static String runOtherCommand(String command, String args) throws IOException {
-
-        try{
-            runFile(command, args);
-        }catch (Exception e){
-            return args + ": not found";
-        }
-        return null;
+        runFile(command, args);
+        return args + ": not found";
     }
 
     private static void runFile(String command, String args) throws IOException {
