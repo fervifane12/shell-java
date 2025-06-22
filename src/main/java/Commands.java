@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class Commands {
 
@@ -47,17 +48,19 @@ public class Commands {
     private static void runFile(String command, String args) throws IOException {
         String[] commandsPath = getCommandsPath(command);
 
+        if (args.trim().contains(" ")){
+            args = command + Arrays.toString(args.trim().split("\\s+"));
+        }
+
         for (String path : commandsPath){
             File file = new File(path, command);
 
             if (file.exists() && file.canExecute()) {
+                path = path+command;
                 ProcessBuilder processBuilder = new ProcessBuilder(path, args);
                 processBuilder.start();
             }
         }
-
-        ProcessBuilder process = new ProcessBuilder(command);
-        process.start();
     }
 
     private static String typeCommand(String args) {
