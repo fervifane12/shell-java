@@ -11,7 +11,7 @@ public class Main {
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
 
-            Commands.runCommand(input);
+            Commands.runBuiltInCommand(input);
 
         }
     }
