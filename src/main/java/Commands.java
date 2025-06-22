@@ -46,6 +46,7 @@ public class Commands {
     private static void runFile(String command, String args) throws IOException {
         String[] commandsPath = getCommandsPath(command);
 
+        command = command + " " + args;
         for (String path : commandsPath){
             File file = new File(path, command);
             if (file.canExecute() && file.exists()){
@@ -61,7 +62,7 @@ public class Commands {
                     }
 
                     reader.close();
-                    
+
                 }
                 catch (Exception e) {
                     e.printStackTrace();
