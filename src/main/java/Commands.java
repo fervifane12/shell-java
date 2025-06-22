@@ -49,7 +49,7 @@ public class Commands {
         for (String path : commandsPath){
             File file = new File(path, command);
             if (file.canExecute() && file.exists()){
-                ProcessBuilder processBuilder = new ProcessBuilder(command, path);
+                ProcessBuilder processBuilder = new ProcessBuilder(command, args);
                 try{
                     Process process = processBuilder.start();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(
