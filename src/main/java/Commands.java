@@ -48,7 +48,7 @@ public class Commands {
         String[] commandsPath = getCommandsPath(command);
 
         for (String path : commandsPath){
-            File file = new File(path, args);
+            File file = new File(path, command);
 
             if (file.exists() && file.canExecute()) {
                 System.out.println(command + args);
