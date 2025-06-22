@@ -1,3 +1,4 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -53,10 +54,10 @@ public class Commands {
             File file = new File(path, command);
 
             if (file.exists() && file.canExecute()) {
-                path = path+command;
-                System.out.println(path);
                 ProcessBuilder processBuilder = new ProcessBuilder(args);
                 Process process = processBuilder.start();
+                String output = process.getOutputStream().toString();
+                System.out.println(output);
             }
         }
     }
