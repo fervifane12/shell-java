@@ -35,18 +35,14 @@ public class Commands {
         }
     }
 
-    private static String runOtherCommand(String command, String args) throws IOException {
+    private static void runOtherCommand(String command, String args) throws IOException {
         runFile(command, args);
-        return args + ": not found";
     }
 
-    private static void runFile(String command, String args) throws IOException {
+    private static String runFile(String command, String args) throws IOException {
         String[] commandsPath = getCommandsPath(command);
-        List<String> commandList = new ArrayList<>();
-        commandList.add(command);
-        for (String arg : args.trim().split("\\s+")){
-            commandList.add(arg);
-        }
+
+        List<String> commandList = listArgs(command, args);
 
         for (String path : commandsPath){
             File file = new File(path, command);
@@ -71,7 +67,21 @@ public class Commands {
             }
         }
 
+        return command + ": not found";
 
+    }
+
+    private static List<String> listArgs(String command, String args){
+        if (!args.isEmpty()){
+            List<String> commandList = new ArrayList<>();
+            commandList.add(command);
+            for (String arg : args.trim().split("\\s+")){
+                commandList.add(arg);
+            }
+            return commandList;
+        }
+
+        return List.of();
     }
 
     private static String typeCommand(String args) {
