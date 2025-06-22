@@ -50,10 +50,11 @@ public class Commands {
         for (String path : commandsPath){
             File file = new File(path, args);
 
-                System.out.println(command+args);
-                ProcessBuilder processBuilder = new ProcessBuilder(command , args);
+            if (file.exists() && file.canExecute()) {
+                System.out.println(command + args);
+                ProcessBuilder processBuilder = new ProcessBuilder(command, args);
                 processBuilder.start();
-
+            }
         }
 
         ProcessBuilder process = new ProcessBuilder(command);
