@@ -56,7 +56,7 @@ public class Commands {
                 path = path+command;
                 System.out.println(path);
                 ProcessBuilder processBuilder = new ProcessBuilder(args);
-                processBuilder.start();
+                Process process = processBuilder.start();
             }
         }
     }
