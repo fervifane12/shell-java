@@ -36,10 +36,12 @@ public class Commands {
     }
 
     private static void runOtherCommand(String command, String args) throws IOException {
-        runFile(command, args);
+        if (!runFile(command, args)){
+            System.out.println(command + ": not found");
+        }
     }
 
-    private static String runFile(String command, String args) throws IOException {
+    private static boolean runFile(String command, String args) throws IOException {
         String[] commandsPath = getCommandsPath(command);
 
         List<String> commandList = listArgs(command, args);
@@ -58,18 +60,18 @@ public class Commands {
                         System.out.println(line);
                     }
 
-
                     reader.close();
+                    return true;
                 }
                 catch (Exception e) {
                     e.printStackTrace();
+                    return false;
                 }
             } else {
-                System.out.println(command + ": not found");
-                return command + ": not found";
+                return false;
             }
         }
-        return null;
+        return false;
 
     }
 
