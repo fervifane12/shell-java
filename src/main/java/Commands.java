@@ -51,7 +51,7 @@ public class Commands {
             File file = new File(path, args);
 
                 System.out.println(command+args);
-                ProcessBuilder processBuilder = new ProcessBuilder(command + args);
+                ProcessBuilder processBuilder = new ProcessBuilder(command , args);
                 processBuilder.start();
 
         }
