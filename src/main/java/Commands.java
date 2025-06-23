@@ -134,8 +134,10 @@ public class Commands {
         }
     }
 
-    public static void pwdCommand(){
-
+    public static String pwdCommand(){
+        String path = System.getProperty("user.dir");
+        System.out.println(path);
+        return path;
     }
 
 
