@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Commands {
@@ -28,6 +27,9 @@ public class Commands {
                 break;
             case "type":
                 typeCommand(args);
+                break;
+            case "pwd":
+                pwdCommand();
                 break;
 
             default:
@@ -130,6 +132,10 @@ public class Commands {
             System.out.println(output);
             return output;
         }
+    }
+
+    public static void pwdCommand(){
+
     }
 
 
