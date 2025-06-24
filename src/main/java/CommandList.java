@@ -1,3 +1,3 @@
 public enum CommandList {
-    EXIT, TYPE, ECHO, PWD
+    EXIT, TYPE, ECHO, PWD, CD
 }

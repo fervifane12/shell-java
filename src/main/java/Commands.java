@@ -31,6 +31,9 @@ public class Commands {
             case "pwd":
                 pwdCommand();
                 break;
+            case "cd":
+                cdCommand(args);
+                break;
 
             default:
                 runOtherCommand(command, args);
@@ -44,7 +47,7 @@ public class Commands {
     }
 
     private static boolean runFile(String command, String args) throws IOException {
-        String[] commandsPath = getCommandsPath(command);
+        String[] commandsPath = getCommandsPath();
 
         List<String> commandList = listArgs(command, args);
 
@@ -102,7 +105,7 @@ public class Commands {
                 }
             }
 
-            String[] pathList = getCommandsPath(args);
+            String[] pathList = getCommandsPath();
 
             for (String directory : pathList) { // Loops in the dirs
 
@@ -140,6 +143,16 @@ public class Commands {
         return path;
     }
 
+    public static void cdCommand(String path) throws NullPointerException{
+
+        try {
+            System.setProperty("user.dir", path);
+        }catch (IllegalArgumentException e){
+            System.out.println("cd: " + path + ": No such file or directory");
+        }
+
+
+    }
 
     public static String echoCommand(String args){
         System.out.println(args);
@@ -150,16 +163,17 @@ public class Commands {
             System.exit(0);
     }
 
-    private static String[] getCommandsPath(String command){
+    private static String[] getCommandsPath(){
         String[] commandPaths;
         String pathEnv = System.getenv("PATH"); // Draw the list of the paths where the commands are usually located
-        String separator = "";
+        String separator;
 
         if(System.getProperty("os.name").toLowerCase().contains("win")){ //if it's on win will use → ;
             separator = ";";
         } else{
             separator = ":";
         }
+
         commandPaths = pathEnv.split(separator); // Splits the list in directories
         return commandPaths;
     }
