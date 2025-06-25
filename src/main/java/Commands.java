@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Commands {
@@ -9,7 +10,7 @@ public class Commands {
         String command;
         String args = null;
 
-        if (input.contains(" ")){
+        if (input.contains(" ")) {
             String[] text = input.trim().split(" ", 2);
             command = text[0];
             args = text[1];
@@ -17,7 +18,7 @@ public class Commands {
             command = input;
         }
 
-        switch (command.toLowerCase()){
+        switch (command.toLowerCase()) {
 
             case "exit":
                 exitCommand();
@@ -41,7 +42,7 @@ public class Commands {
     }
 
     private static void runOtherCommand(String command, String args) throws IOException {
-        if (!runFile(command, args)){
+        if (!runFile(command, args)) {
             System.out.println(command + ": not found");
         }
     }
@@ -51,24 +52,23 @@ public class Commands {
 
         List<String> commandList = listArgs(command, args);
 
-        for (String path : commandsPath){
+        for (String path : commandsPath) {
             File file = new File(path, command);
-            if (file.canExecute() && file.exists()){
+            if (file.canExecute() && file.exists()) {
                 ProcessBuilder processBuilder = new ProcessBuilder(commandList);
-                try{
+                try {
                     Process process = processBuilder.start();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(
                             process.getInputStream()));
                     String line;
 
-                    while ((line=reader.readLine())!= null){
+                    while ((line = reader.readLine()) != null) {
                         System.out.println(line);
                     }
 
                     reader.close();
                     return true;
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     return false;
                 }
@@ -80,11 +80,11 @@ public class Commands {
 
     }
 
-    private static List<String> listArgs(String command, String args){
-        if (args!=null){
+    private static List<String> listArgs(String command, String args) {
+        if (args != null) {
             List<String> commandList = new ArrayList<>();
             commandList.add(command);
-            for (String arg : args.trim().split("\\s+")){
+            for (String arg : args.trim().split("\\s+")) {
                 commandList.add(arg);
             }
             return commandList;
@@ -95,10 +95,10 @@ public class Commands {
     private static String typeCommand(String args) {
         String output;
 
-        try{
+        try {
 
-            for (CommandList commandList : CommandList.values()){
-                if (commandList.name().equalsIgnoreCase(args)){
+            for (CommandList commandList : CommandList.values()) {
+                if (commandList.name().equalsIgnoreCase(args)) {
                     output = args + " is a shell builtin";
                     System.out.println(output);
                     return output;
@@ -109,14 +109,14 @@ public class Commands {
 
             for (String directory : pathList) { // Loops in the dirs
 
-                if(System.getProperty("os.name").toLowerCase().contains("win")){
-                    File file = new File(directory, args+".exe"); // Creates a file in the dir
+                if (System.getProperty("os.name").toLowerCase().contains("win")) {
+                    File file = new File(directory, args + ".exe"); // Creates a file in the dir
                     if (file.exists() && file.canExecute()) { // Check if exists and if it's executable
                         output = args + " is " + file.getAbsolutePath();
                         System.out.println(output);
                         return output;
                     }
-                } else{
+                } else {
                     File file = new File(directory, args); // Creates a file in the dir
                     if (file.exists() && file.canExecute()) { // Check if exists and if it's executable
                         output = args + " is " + file.getAbsolutePath();
@@ -130,54 +130,87 @@ public class Commands {
             System.out.println(output);
             return output;
 
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             output = args + ": not found";
             System.out.println(output);
             return output;
         }
     }
 
-    public static String pwdCommand(){
+    public static String pwdCommand() {
         String path = System.getProperty("user.dir");
         System.out.println(path);
         return path;
     }
 
-    public static void cdCommand(String path)  {
+    public static void cdCommand(String path) {
+
+        String currentPath = System.getProperty("user.dir");
+        String newPath = "";
+
+        if (path.contains("../")) {
+            int a = 0;
+            while (path.split("../").length > a ){
+                String[] pathDirs = currentPath.strip().split("\\\\");
+                for (int i = 0; i < pathDirs.length-1; i++) {
+                    newPath = newPath + "\\" + pathDirs[i];
+                }
+                System.setProperty("user.dir", newPath.substring(1));
+                a++;
+            }
+
+        } else if (path.contains("./")) {
+
+            path = currentPath + path.substring(1);
+            if (checkDirExistence(path)){
+                System.setProperty("user.dir", path);
+            }
+            
+        } else {
+
+            if (checkDirExistence(path)){
+                System.setProperty("user.dir", path);
+            }
+        }
+    }
+
+    public static boolean checkDirExistence(String path){
         try {
             File file = new File(path);
-            if (!file.createNewFile()){
+            if (!file.createNewFile()) {
                 file.delete();
-                System.setProperty("user.dir", path);
+                return true;
             } else {
                 System.out.println("cd: " + path + ": No such file or directory");
+                return false;
             }
-        }catch (NullPointerException e){
+
+        } catch (NullPointerException e) {
             System.out.println("cd: " + path + ": No such file or directory");
+            return false;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
-    public static String echoCommand(String args){
+
+    public static String echoCommand(String args) {
         System.out.println(args);
         return args;
     }
 
-    public static void exitCommand(){
-            System.exit(0);
+    public static void exitCommand() {
+        System.exit(0);
     }
 
-    private static String[] getCommandsPath(){
+    private static String[] getCommandsPath() {
         String[] commandPaths;
         String pathEnv = System.getenv("PATH"); // Draw the list of the paths where the commands are usually located
         String separator;
 
-        if(System.getProperty("os.name").toLowerCase().contains("win")){ //if it's on win will use → ;
+        if (System.getProperty("os.name").toLowerCase().contains("win")) { //if it's on win will use → ;
             separator = ";";
-        } else{
+        } else {
             separator = ":";
         }
 
