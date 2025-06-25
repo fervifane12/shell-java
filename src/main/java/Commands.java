@@ -143,12 +143,20 @@ public class Commands {
         return path;
     }
 
-    public static void cdCommand(String path) throws NullPointerException{
-
+    public static void cdCommand(String path)  {
         try {
-            System.setProperty("user.dir", path);
-        }catch (IllegalArgumentException e){
+            File file = new File(path);
+            if (!file.createNewFile()){
+                System.setProperty("user.dir", path);
+            } else {
+                System.out.println("cd: " + path + ": No such file or directory");
+            }
+
+
+        }catch (NullPointerException e){
             System.out.println("cd: " + path + ": No such file or directory");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
 
