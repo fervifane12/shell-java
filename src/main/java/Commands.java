@@ -147,12 +147,11 @@ public class Commands {
         try {
             File file = new File(path);
             if (!file.createNewFile()){
+                file.delete();
                 System.setProperty("user.dir", path);
             } else {
                 System.out.println("cd: " + path + ": No such file or directory");
             }
-
-
         }catch (NullPointerException e){
             System.out.println("cd: " + path + ": No such file or directory");
         } catch (IOException e) {
