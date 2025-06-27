@@ -151,7 +151,7 @@ public class Commands {
                 int x  = (path.splitWithDelimiters("../", 0).length)/2; //Ammount of ../ that were input
                 String[] pathDirs = currentPath.trim().split("\\\\");
                 int y = pathDirs.length; //The lenght of the current dir
-                if (x>=y){
+                if (x>y){
                     System.out.println("cd: " + path + ": No such file or directory");
                 }else {
                     for (int i = 0; i < y-x; i++) {
