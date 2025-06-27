@@ -155,7 +155,7 @@ public class Commands {
                     System.out.println("cd: " + path + ": No such file or directory");
                 }else {
                     for (int i = 0; i < y-x; i++) {
-                        newPath = newPath + "\\" + pathDirs[i];
+                        newPath = newPath + "/" + pathDirs[i];
                     }
                     System.setProperty("user.dir", newPath.substring(1));
                 }
