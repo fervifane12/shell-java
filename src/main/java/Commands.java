@@ -1,12 +1,11 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Commands {
 
     public static void runBuiltInCommand(String input) throws IOException {
-
+        input = input.trim();
         String command;
         String args = null;
 
@@ -144,34 +143,41 @@ public class Commands {
     }
 
     public static void cdCommand(String path) {
+        try {
+            String currentPath = System.getProperty("user.dir");
+            String newPath = "";
 
-        String currentPath = System.getProperty("user.dir");
-        String newPath = "";
-
-        if (path.contains("../")) {
-            int a = 0;
-            while (path.split("../").length > a ){
-                String[] pathDirs = currentPath.strip().split("\\\\");
-                for (int i = 0; i < pathDirs.length-1; i++) {
-                    newPath = newPath + "\\" + pathDirs[i];
+            if (path.contains("../")) {
+                int x  = (path.splitWithDelimiters("../", 0).length)/2; //Ammount of ../ that were input
+                String[] pathDirs = currentPath.trim().split("\\\\");
+                int y = pathDirs.length; //The lenght of the current dir
+                if (x>=y){
+                    System.out.println("cd: " + path + ": No such file or directory");
+                }else {
+                    for (int i = 0; i < y-x; i++) {
+                        newPath = newPath + "\\" + pathDirs[i];
+                    }
+                    System.setProperty("user.dir", newPath.substring(1));
                 }
-                System.setProperty("user.dir", newPath.substring(1));
-                a++;
-            }
 
-        } else if (path.contains("./")) {
 
-            path = currentPath + path.substring(1);
-            if (checkDirExistence(path)){
-                System.setProperty("user.dir", path);
-            }
-            
-        } else {
+            } else if (path.contains("./")) {
 
-            if (checkDirExistence(path)){
-                System.setProperty("user.dir", path);
+                path = currentPath + path.substring(1);
+                if (checkDirExistence(path)){
+                    System.setProperty("user.dir", path);
+                }
+
+            } else {
+
+                if (checkDirExistence(path)){
+                    System.setProperty("user.dir", path);
+                }
             }
+        }catch (NullPointerException e){
+            System.out.println("cd: " + path + ": No such file or directory");
         }
+
     }
 
     public static boolean checkDirExistence(String path){
