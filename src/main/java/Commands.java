@@ -168,6 +168,8 @@ public class Commands {
                     System.setProperty("user.dir", path);
                 }
 
+            } else if (path.contains("~")) {
+                System.setProperty("user.dir", System.getenv("HOME"));
             } else {
 
                 if (checkDirExistence(path)){
@@ -223,5 +225,4 @@ public class Commands {
         commandPaths = pathEnv.split(separator); // Splits the list in directories
         return commandPaths;
     }
-
 }
