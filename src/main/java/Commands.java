@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Commands {
 
@@ -203,16 +205,23 @@ public class Commands {
 
 
     public static String echoCommand(String args) {
+
         if (args.trim().startsWith("'") && args.trim().endsWith("'")) {
             System.out.println(args.substring(1, args.length()-1));
         } else if (args.trim().startsWith("\"") && args.trim().endsWith("\"")) {
             return null;
         }else {
             String[] argsListed = args.split(" ");
+            String organizedArgs = "";
+
             for (String argsA : argsListed){
-                args = argsA.trim() + " ";
+                if (argsA.equals(" ")){
+                    continue;
+                } else {
+                    organizedArgs = organizedArgs.trim() + " " + argsA;
+                }
             }
-            System.out.println(args.trim());
+            System.out.println(organizedArgs.trim());
         }
         return args;
     }
