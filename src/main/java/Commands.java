@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Commands {
 
-    public static void runBuiltInCommand(String input) throws IOException {
+    public static void runBuiltInCommand(String input){
         input = input.trim();
         String command;
         String args = null;
@@ -40,13 +40,13 @@ public class Commands {
         }
     }
 
-    private static void runOtherCommand(String command, String args) throws IOException {
+    private static void runOtherCommand(String command, String args) {
         if (!runFile(command, args)) {
             System.out.println(command + ": not found");
         }
     }
 
-    private static boolean runFile(String command, String args) throws IOException {
+    private static boolean runFile(String command, String args) {
         String[] commandsPath = getCommandsPath();
 
         List<String> commandList = listArgs(command, args);
@@ -151,7 +151,7 @@ public class Commands {
                 int x  = (path.splitWithDelimiters("../", 0).length)/2; //Ammount of ../ that were input
                 String[] pathDirs = currentPath.trim().split("/");
                 int y = pathDirs.length; //The lenght of the current dir
-                if (x>=y){ //This might be problematic
+                if (x>=y){
                     System.out.println("cd: " + path + ": No such file or directory");
                 }else {
                     for (int i = 0; i < y-x; i++) {
@@ -203,7 +203,17 @@ public class Commands {
 
 
     public static String echoCommand(String args) {
-        System.out.println(args);
+        if (args.trim().startsWith("'") && args.trim().endsWith("'")) {
+            System.out.println(args.substring(1, args.length()-1));
+        } else if (args.trim().startsWith("\"") && args.trim().endsWith("\"")) {
+            return null;
+        }else {
+            String[] argsListed = args.split(" ");
+            for (String argsA : argsListed){
+                args = argsA.trim() + " ";
+            }
+            System.out.println(args.trim());
+        }
         return args;
     }
 
