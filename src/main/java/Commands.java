@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Commands {
 
@@ -204,9 +205,15 @@ public class Commands {
 
     public static void addNotQuoted (String content, StringBuilder builder){
         String[] argsSplit = content.split(" ");
+        System.out.println("1.1");
         for (String args : argsSplit){
-            builder.append(" ");
-            builder.append(args);
+            System.out.println("1.2");
+            if (!args.equals(" ")){
+                builder.append(" ");
+                builder.append(args.trim());
+            }
+            System.out.println(args);
+            System.out.println(builder);
         }
     }
 
@@ -218,12 +225,16 @@ public class Commands {
 
         for (String content: argsSplit){
             if (content.equals("'") && !isInsideQuotes){
+                System.out.println("1");
                 isInsideQuotes = true;
             } else if (content.equals("'") && isInsideQuotes) {
+                System.out.println("2");
                 isInsideQuotes = false;
             } else if (!content.equals("'") && isInsideQuotes) {
+                System.out.println("3");
                 builder.append(content);
             } else {
+                System.out.println("4");
                 addNotQuoted(content, builder);
             }
         }
