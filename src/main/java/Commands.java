@@ -225,7 +225,7 @@ public class Commands {
                 addNotQuoted(content, builder);
             }
         }
-
+        System.out.println(builder.toString().trim());
         return builder.toString().trim();
 
     }
