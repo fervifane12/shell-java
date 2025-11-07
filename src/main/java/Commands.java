@@ -52,8 +52,6 @@ public class Commands {
 
         List<String> commandList = listArgs(command, args);
 
-        System.out.println(commandList);
-
         for (String path : commandsPath) {
             File file = new File(path, command);
             if (file.canExecute() && file.exists()) {
