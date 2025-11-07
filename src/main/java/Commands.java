@@ -51,9 +51,6 @@ public class Commands {
         String[] commandsPath = getCommandsPath();
 
         List<String> commandList = listArgs(command, args);
-        for (int i = 0; i < commandList.size(); i++) {
-            commandList.set(i, commandList.get(i).replaceAll("(^['\"]|['\"]$)", ""));
-        }
 
         for (String path : commandsPath) {
             File file = new File(path, command);
@@ -87,9 +84,7 @@ public class Commands {
         if (args != null) {
             List<String> commandList = new ArrayList<>();
             commandList.add(command);
-            for (String arg : args.trim().split("\\s+")) {
-                commandList.add(arg);
-            }
+            commandList.add(echoCommand(args));
             return commandList;
         }
         return List.of();
