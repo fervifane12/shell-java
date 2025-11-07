@@ -50,7 +50,10 @@ public class Commands {
     private static boolean runFile(String command, String args) {
         String[] commandsPath = getCommandsPath();
 
-        List<String> commandList = listArgs(command, args.replaceAll("'", ""));
+        List<String> commandList = listArgs(command, args);
+        for (int i = 0; i < commandList.size(); i++) {
+            commandList.set(i, commandList.get(i).replaceAll("(^['\"]|['\"]$)", ""));
+        }
 
         for (String path : commandsPath) {
             File file = new File(path, command);
