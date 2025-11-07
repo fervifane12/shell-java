@@ -50,7 +50,7 @@ public class Commands {
     private static boolean runFile(String command, String args) {
         String[] commandsPath = getCommandsPath();
 
-        List<String> commandList = listArgs(command, args);
+        List<String> commandList = listArgs(command, args.replaceAll("'", ""));
 
         for (String path : commandsPath) {
             File file = new File(path, command);
@@ -208,8 +208,6 @@ public class Commands {
     }
 
     public static String echoCommand(String args) {
-
-
         StringBuilder builder = new StringBuilder();
         String[] argsSplit = args.splitWithDelimiters("'", 0);
         boolean isInsideQuotes = false;
