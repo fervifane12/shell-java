@@ -52,6 +52,8 @@ public class Commands {
 
         List<String> commandList = listArgs(command, args);
 
+        System.out.println(commandList);
+
         for (String path : commandsPath) {
             File file = new File(path, command);
             if (file.canExecute() && file.exists()) {
@@ -80,14 +82,23 @@ public class Commands {
 
     }
 
-    private static List<String> listArgs(String command, String args) {
-        if (args != null) {
-            List<String> commandList = new ArrayList<>();
-            commandList.add(command);
-            commandList.add(echoCommand(args));
-            return commandList;
+    private static ArrayList<String> listArgs(String command, String args) {
+        ArrayList<String> argsAndComand = new ArrayList<>();
+        String[] argsSplit = args.splitWithDelimiters("'", 0);
+        boolean isInsideQuotes = false;
+        argsAndComand.add(command);
+
+        for (String content: argsSplit){
+            if (content.equals("'") && !isInsideQuotes){
+                isInsideQuotes = true;
+            } else if (content.equals("'") && isInsideQuotes) {
+                isInsideQuotes = false;
+            } else if (!content.equals("'") && isInsideQuotes) {
+                argsAndComand.add(content);
+            }
         }
-        return List.of();
+        System.out.println(argsAndComand.toString().trim());
+        return argsAndComand;
     }
 
     private static String typeCommand(String args) {
