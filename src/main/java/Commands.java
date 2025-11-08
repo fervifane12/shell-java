@@ -94,7 +94,7 @@ public class Commands {
             } else if (!content.equals("'") && isInsideQuotes) {
                 argsAndComand.add(content);
             }
-            else if (!args.contains("'") && args.contains(" ")) {
+            else if (args.contains(" ")) {
                 args = args.replaceAll("\s+", " ");
                 String[] argsList = args.split(" ");
                 argsAndComand.addAll(Arrays.asList(argsList));
