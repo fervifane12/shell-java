@@ -97,9 +97,7 @@ public class Commands {
             else if (!args.contains("'") && args.contains(" ")) {
                 args = args.replaceAll("\s+", " ");
                 String[] argsList = args.split(" ");
-                for (String args1 : argsList){
-                    argsAndComand.add(args1);
-                }
+                argsAndComand.addAll(Arrays.asList(argsList));
             }
         }
         return argsAndComand;
