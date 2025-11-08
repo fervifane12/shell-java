@@ -94,6 +94,13 @@ public class Commands {
             } else if (!content.equals("'") && isInsideQuotes) {
                 argsAndComand.add(content);
             }
+            else if (!args.contains("'") && args.contains(" ")) {
+                args = args.replaceAll("\s+", " ");
+                String[] argsList = args.split(" ");
+                for (String args1 : argsList){
+                    argsAndComand.add(args1);
+                }
+            }
         }
         return argsAndComand;
     }
