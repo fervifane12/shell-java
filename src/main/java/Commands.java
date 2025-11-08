@@ -42,6 +42,9 @@ public class Commands {
     }
 
     private static void runOtherCommand(String command, String args) {
+
+
+
         if (!runFile(command, args)) {
             System.out.println(command + ": not found");
         }
