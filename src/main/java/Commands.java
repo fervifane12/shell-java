@@ -85,7 +85,7 @@ public class Commands {
 
     private static ArrayList<String> listArgs(String command, String args) {
         ArrayList<String> argsAndComand = new ArrayList<>();
-        String[] argsSplit = args.splitWithDelimiters("'", 1);
+        String[] argsSplit = args.splitWithDelimiters("'", 0);
         boolean isInsideQuotes = false;
         argsAndComand.add(command);
 
@@ -97,11 +97,7 @@ public class Commands {
             } else if (!content.equals("'") && isInsideQuotes) {
                 argsAndComand.add(content);
             }
-            else if (args.contains(" ")) {
-                args = args.replaceAll("\s+", " ");
-                String[] argsList = args.split(" ");
-                argsAndComand.addAll(Arrays.asList(argsList));
-            }
+            
         }
         return argsAndComand;
     }
