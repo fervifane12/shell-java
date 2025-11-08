@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Commands {
 
@@ -17,6 +19,7 @@ public class Commands {
         } else {
             command = input;
         }
+
 
         switch (command.toLowerCase()) {
 
@@ -54,7 +57,7 @@ public class Commands {
         String[] commandsPath = getCommandsPath();
 
         List<String> commandList = listArgs(command, args);
-        
+
         for (String path : commandsPath) {
             File file = new File(path, command);
             if (file.canExecute() && file.exists()) {
@@ -84,6 +87,23 @@ public class Commands {
     }
 
     private static ArrayList<String> listArgs(String command, String args) {
+        ArrayList<String> commandList = new ArrayList<>();
+        commandList.add(command);
+
+        if (args == null || args.isEmpty()) return commandList;
+
+        Matcher matcher = Pattern.compile("'([^']*)'|\"([^\"]*)\"|(\\S+)").matcher(args);
+
+        while (matcher.find()) {
+            String arg = matcher.group(1);
+            if (arg == null) arg = matcher.group(2);
+            if (arg == null) arg = matcher.group(3);
+            commandList.add(arg);
+        }
+
+        return commandList;
+
+        /*
         ArrayList<String> argsAndComand = new ArrayList<>();
         String[] argsSplit = args.splitWithDelimiters("'", 0);
         boolean isInsideQuotes = false;
@@ -98,7 +118,7 @@ public class Commands {
                 argsAndComand.add(content);
             }
         }
-        return argsAndComand;
+        return argsAndComand;*/
     }
 
     private static String typeCommand(String args) {
