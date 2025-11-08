@@ -102,23 +102,6 @@ public class Commands {
         }
 
         return commandList;
-
-        /*
-        ArrayList<String> argsAndComand = new ArrayList<>();
-        String[] argsSplit = args.splitWithDelimiters("'", 0);
-        boolean isInsideQuotes = false;
-        argsAndComand.add(command);
-
-        for (String content: argsSplit){
-            if (content.equals("'") && !isInsideQuotes){
-                isInsideQuotes = true;
-            } else if (content.equals("'") && isInsideQuotes) {
-                isInsideQuotes = false;
-            } else if (!content.equals("'") && isInsideQuotes) {
-                argsAndComand.add(content);
-            }
-        }
-        return argsAndComand;*/
     }
 
     private static String typeCommand(String args) {
