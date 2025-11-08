@@ -53,18 +53,8 @@ public class Commands {
     private static boolean runFile(String command, String args) {
         String[] commandsPath = getCommandsPath();
 
-        ArrayList<String> commandList = new ArrayList<>();
-        if (args.contains(" ") && !args.contains("'")) {
-            ArrayList<String> argsAndComand = new ArrayList<>();
-            argsAndComand.add(command);
-            args = args.replaceAll("\s+", " ");
-            String[] argsList = args.split(" ");
-            argsAndComand.addAll(Arrays.asList(argsList));
-            commandList = argsAndComand;
-        } else {
-            commandList = listArgs(command, args);
-        }
-
+        List<String> commandList = listArgs(command, args);
+        
         for (String path : commandsPath) {
             File file = new File(path, command);
             if (file.canExecute() && file.exists()) {
