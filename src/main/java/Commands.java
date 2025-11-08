@@ -95,7 +95,6 @@ public class Commands {
                 argsAndComand.add(content);
             }
         }
-        System.out.println(argsAndComand.toString().trim());
         return argsAndComand;
     }
 
