@@ -233,6 +233,7 @@ public class Commands {
             }
             builder.append(arg);
         }
+        System.out.println(builder.toString().trim());
         return builder.toString();
         /*
         String[] argsSplit = args.splitWithDelimiters("'", 0);
