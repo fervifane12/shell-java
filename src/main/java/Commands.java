@@ -221,6 +221,24 @@ public class Commands {
 
     public static String echoCommand(String args) {
         StringBuilder builder = new StringBuilder();
+
+        if ( args == null || args.isEmpty()){
+            return args = "";
+        }
+
+        Matcher matcher = Pattern.compile("'([^']*)'|\"([^\"]*)\"|(\\S+)").matcher(args);
+
+        while (matcher.find()){
+            String arg = matcher.group(1);
+            if (arg == null){
+                arg = matcher.group(2);
+            } else if (arg==null) {
+                arg = matcher.group(3);
+            }
+            builder.append(arg);
+        }
+        return builder.toString();
+        /*
         String[] argsSplit = args.splitWithDelimiters("'", 0);
         boolean isInsideQuotes = false;
 
@@ -238,6 +256,7 @@ public class Commands {
         System.out.println(builder.toString().trim());
         return builder.toString().trim();
 
+         */
     }
 
     public static void exitCommand() {
