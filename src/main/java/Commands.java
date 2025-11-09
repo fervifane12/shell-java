@@ -232,8 +232,8 @@ public class Commands {
                 arg = matcher.group(3);
             }
 
-            if (args.charAt(matcher.end()) == ' '){
-                builder.append(" ");
+            if (args.length() != matcher.end()){
+                if (args.charAt(matcher.end()) == ' '){builder.append(" ");}
             }
 
             builder.append(arg);
