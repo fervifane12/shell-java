@@ -231,8 +231,12 @@ public class Commands {
             } else if (arg==null) {
                 arg = matcher.group(3);
             }
+            String character = String.valueOf(args.charAt(matcher.end()));
+            if (character.equals(" ")){
+                builder.append(" ");
+            }
             builder.append(arg);
-            builder.append(" ");
+
         }
         System.out.println(builder.toString().trim());
         return builder.toString();
