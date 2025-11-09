@@ -222,10 +222,6 @@ public class Commands {
     public static String echoCommand(String args) {
         StringBuilder builder = new StringBuilder();
 
-        if ( args == null || args.isEmpty()){
-            return args = "";
-        }
-
         Matcher matcher = Pattern.compile("'([^']*)'|\"([^\"]*)\"|(\\S+)").matcher(args);
 
         while (matcher.find()){
