@@ -231,10 +231,11 @@ public class Commands {
             } else if (arg==null) {
                 arg = matcher.group(3);
             }
-            Character character = args.charAt(matcher.end());
-            if (character.equals(" ")){
+
+            if (args.charAt(matcher.end()) == ' '){
                 builder.append(" ");
             }
+
             builder.append(arg);
 
         }
