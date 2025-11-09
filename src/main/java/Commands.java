@@ -234,7 +234,7 @@ public class Commands {
             }
 
             if (args.length() != matcher.end()){
-                if (args.charAt(matcher.end()) == ' '){builder.append(" ");}
+                if (args.charAt(matcher.end()+1) == ' '){builder.append(" ");}
             }
 
             builder.append(arg);
@@ -242,6 +242,7 @@ public class Commands {
         }
         System.out.println(builder.toString().trim());
         return builder.toString();
+    }
         /*
         String[] argsSplit = args.splitWithDelimiters("'", 0);
         boolean isInsideQuotes = false;
@@ -261,7 +262,7 @@ public class Commands {
         return builder.toString().trim();
 
          */
-    }
+
 
     public static void exitCommand() {
         System.exit(0);
