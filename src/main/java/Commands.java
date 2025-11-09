@@ -232,6 +232,7 @@ public class Commands {
                 arg = matcher.group(3);
             }
             builder.append(arg);
+            builder.append(" ");
         }
         System.out.println(builder.toString().trim());
         return builder.toString();
