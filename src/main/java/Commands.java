@@ -228,12 +228,13 @@ public class Commands {
             String arg = matcher.group(1);
             if (arg == null){
                 arg = matcher.group(2);
-            } else if (arg==null) {
+            }
+            if (arg==null) {
                 arg = matcher.group(3);
             }
 
             if (args.length() != matcher.end()){
-                if (args.charAt(matcher.end()-1) == ' '){builder.append(" ");}
+                if (args.charAt(matcher.end()) == ' '){builder.append(" ");}
             }
 
             builder.append(arg);
