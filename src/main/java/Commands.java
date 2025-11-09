@@ -231,7 +231,7 @@ public class Commands {
             } else if (arg==null) {
                 arg = matcher.group(3);
             }
-            String character = String.valueOf(args.charAt(matcher.end()));
+            Character character = args.charAt(matcher.end());
             if (character.equals(" ")){
                 builder.append(" ");
             }
