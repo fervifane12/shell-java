@@ -233,7 +233,7 @@ public class Commands {
             }
 
             if (args.length() != matcher.end()){
-                if (args.charAt(matcher.end()+1) == ' '){builder.append(" ");}
+                if (args.charAt(matcher.end()-1) == ' '){builder.append(" ");}
             }
 
             builder.append(arg);
