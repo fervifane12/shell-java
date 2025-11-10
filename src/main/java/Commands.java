@@ -222,13 +222,12 @@ public class Commands {
     public static String echoCommand(String args) {
         StringBuilder builder = new StringBuilder();
 
-        Matcher matcher = Pattern.compile("'([^']*)'|\"([^\"]*)\"|(\\S+)").matcher(args);
+        Matcher matcher = Pattern.compile("'([^']*)'|\"([^\"]*)\"|([^\\s'\"]+)").matcher(args);
 
         while (matcher.find()){
             String arg = matcher.group(1);
             if (arg == null) arg = matcher.group(2);
             if (arg == null) arg = matcher.group(3);
-            if (arg == null) continue;
 
             builder.append(arg);
 
@@ -241,26 +240,6 @@ public class Commands {
         System.out.println(builder.toString().trim());
         return builder.toString();
     }
-        /*
-        String[] argsSplit = args.splitWithDelimiters("'", 0);
-        boolean isInsideQuotes = false;
-
-        for (String content: argsSplit){
-            if (content.equals("'") && !isInsideQuotes){
-                isInsideQuotes = true;
-            } else if (content.equals("'") && isInsideQuotes) {
-                isInsideQuotes = false;
-            } else if (!content.equals("'") && isInsideQuotes) {
-                builder.append(content);
-            } else {
-                addNotQuoted(content, builder);
-            }
-        }
-        System.out.println(builder.toString().trim());
-        return builder.toString().trim();
-
-         */
-
 
     public static void exitCommand() {
         System.exit(0);
