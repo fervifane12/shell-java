@@ -226,6 +226,7 @@ public class Commands {
 
         while (matcher.find()){
             String arg = matcher.group(1);
+
             if (arg == null){
                 arg = matcher.group(2);
             }
@@ -233,12 +234,13 @@ public class Commands {
                 arg = matcher.group(3);
             }
 
-            if (args.length() != matcher.end()){
-                if (args.charAt(matcher.end()+1) == ' '){builder.append(" ");}
-            }
-
             builder.append(arg);
 
+            if (args.length() != matcher.end()){
+                if (args.charAt(matcher.end()) == ' '){
+                    builder.append(" ");
+                }
+            }
         }
         System.out.println(builder.toString().trim());
         return builder.toString();
