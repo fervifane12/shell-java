@@ -226,13 +226,9 @@ public class Commands {
 
         while (matcher.find()){
             String arg = matcher.group(1);
-
-            if (arg == null){
-                arg = matcher.group(2);
-            }
-            if (arg==null) {
-                arg = matcher.group(3);
-            }
+            if (arg == null) arg = matcher.group(2);
+            if (arg == null) arg = matcher.group(3);
+            if (arg == null) continue;
 
             builder.append(arg);
 
