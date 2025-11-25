@@ -44,16 +44,14 @@ public class Commands {
         }
     }
 
-    private static void runOtherCommand(String command, String args) {
-
-
+    public static void runOtherCommand(String command, String args) {
 
         if (!runFile(command, args)) {
             System.out.println(command + ": not found");
         }
     }
 
-    private static boolean runFile(String command, String args) {
+    public static boolean runFile(String command, String args) {
         String[] commandsPath = getCommandsPath();
 
         List<String> commandList = listArgs(command, args);
@@ -86,7 +84,7 @@ public class Commands {
 
     }
 
-    private static ArrayList<String> listArgs(String command, String args) {
+    public static ArrayList<String> listArgs(String command, String args) {
         ArrayList<String> commandList = new ArrayList<>();
         commandList.add(command);
 
@@ -104,7 +102,7 @@ public class Commands {
         return commandList;
     }
 
-    private static String typeCommand(String args) {
+    public static String typeCommand(String args) {
         String output;
 
         try {
@@ -214,11 +212,6 @@ public class Commands {
         }
     }
 
-    public static void addNotQuoted (String content, StringBuilder builder){
-        String contentClean = content.replaceAll("\s+", " ");
-        builder.append(contentClean);
-    }
-
     public static String echoCommand(String args) {
         StringBuilder builder = new StringBuilder();
 
@@ -227,7 +220,23 @@ public class Commands {
         while (matcher.find()){
             String arg = matcher.group(1);
             if (arg == null) arg = matcher.group(2);
-            if (arg == null) arg = matcher.group(3);
+            if (arg == null) {
+                arg = matcher.group(3);
+                StringBuilder cleaned = new StringBuilder();
+                for (int i = 0 ; i < arg.length(); i++){
+                    char c = arg.charAt(i);
+
+                    if (c== '\\') {
+                        if (i+1 < arg.length()){
+                            cleaned.append(arg.charAt(i + 1));
+                            i++;
+                        }
+                    }else {
+                        cleaned.append(c);
+                    }
+                }
+                arg = cleaned.toString();
+            }
 
             builder.append(arg);
 
@@ -245,7 +254,7 @@ public class Commands {
         System.exit(0);
     }
 
-    private static String[] getCommandsPath() {
+    public static String[] getCommandsPath() {
         String[] commandPaths;
         String pathEnv = System.getenv("PATH"); // Draw the list of the paths where the commands are usually located
         String separator;
