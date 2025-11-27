@@ -215,38 +215,51 @@ public class Commands {
     public static String echoCommand(String args) {
         StringBuilder builder = new StringBuilder();
 
-        Matcher matcher = Pattern.compile("'([^']*)'|\"([^\"]*)\"|([^\\s'\"]+)").matcher(args);
+        boolean isInSingleQuotes = false;
+        boolean isInDoubleQuotes = false;
+        boolean lastWasSpace = false;
 
-        while (matcher.find()){
-            String arg = matcher.group(1);
-            if (arg == null) arg = matcher.group(2);
-            if (arg == null) {
-                arg = matcher.group(3);
-                StringBuilder cleaned = new StringBuilder();
-                for (int i = 0 ; i < arg.length(); i++){
-                    char c = arg.charAt(i);
-
-                    if (c== '\\') {
-                        if (i+1 < arg.length()){
-                            cleaned.append(arg.charAt(i + 1));
-                            i++;
-                        }
-                    }else {
-                        cleaned.append(c);
-                    }
+        for (int i = 0 ; i < args.length(); i++){
+            String c = String.valueOf(args.charAt(i));
+            if (!isInSingleQuotes && !isInDoubleQuotes){
+                if (c.equals("\\") && i+1 < args.length()){
+                    builder.append(args.charAt(i+1));
+                    i++;
                 }
-                arg = cleaned.toString();
+                else if (c.equals("'")){
+                    isInSingleQuotes = true;
+                }
+                else if (c.equals("\"")){
+                    isInDoubleQuotes = true;
+                }
+                else if (c.equals(" ") && lastWasSpace){
+                    continue;
+                }
+                else if (c.equals(" ")){
+                    lastWasSpace = true;
+                    builder.append(c);
+                }
+                else {
+                    builder.append(c);
+                }
             }
-
-            builder.append(arg);
-
-            if (args.length() != matcher.end()){
-                if (args.charAt(matcher.end()) == ' '){
-                    builder.append(" ");
+            else if (isInSingleQuotes && !c.equals("'")){
+                builder.append(c);
+                i++;
                 }
+            else if (c.equals("'") && isInSingleQuotes) {
+                isInSingleQuotes = false;
+            }
+            else if (isInDoubleQuotes && !c.equals("\"")) {
+                builder.append(c);
+                i++;
+                }
+            else if (c.equals("\"") && isInDoubleQuotes) {
+                isInDoubleQuotes = false;
             }
         }
-        System.out.println(builder.toString().trim());
+        System.out.println(builder);
+
         return builder.toString();
     }
 
