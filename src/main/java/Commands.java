@@ -247,12 +247,20 @@ public class Commands {
                 }
             }
             else if (isInSingleQuotes && !c.equals("'")){
+                if (c.equals("\\") && i+1 < args.length()){
+                    builder.append(args.charAt(i+1));
+                    i++;
+                }
                 builder.append(c);
                 }
             else if (c.equals("'") && isInSingleQuotes) {
                 isInSingleQuotes = false;
             }
             else if (isInDoubleQuotes && !c.equals("\"")) {
+                if (c.equals("\\") && i+1 < args.length()){
+                    builder.append(args.charAt(i+1));
+                    i++;
+                }
                 builder.append(c);
                 }
             else if (c.equals("\"") && isInDoubleQuotes) {
