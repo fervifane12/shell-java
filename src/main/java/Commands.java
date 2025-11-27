@@ -239,6 +239,9 @@ public class Commands {
                     lastWasSpace = true;
                     builder.append(c);
                 }
+                else if (!c.equals(" ") && lastWasSpace) {
+                    lastWasSpace = false;
+                }
                 else {
                     builder.append(c);
                 }
