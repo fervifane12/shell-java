@@ -140,7 +140,7 @@ public class Commands {
                 isInDoubleQuotes = false;
             }
         }
-        String[] splitter = builder.toString().split("[^\\s'\"]+");
+        String[] splitter = builder.toString().split(" ");
         System.out.println(Arrays.toString(splitter));
         commandList.add(Arrays.toString(splitter));
 
