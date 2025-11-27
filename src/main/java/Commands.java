@@ -245,14 +245,12 @@ public class Commands {
             }
             else if (isInSingleQuotes && !c.equals("'")){
                 builder.append(c);
-                i++;
                 }
             else if (c.equals("'") && isInSingleQuotes) {
                 isInSingleQuotes = false;
             }
             else if (isInDoubleQuotes && !c.equals("\"")) {
                 builder.append(c);
-                i++;
                 }
             else if (c.equals("\"") && isInDoubleQuotes) {
                 isInDoubleQuotes = false;
