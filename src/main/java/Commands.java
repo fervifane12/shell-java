@@ -141,6 +141,7 @@ public class Commands {
             }
         }
         String[] splitter = builder.toString().split("([^\\s'\"]+)");
+        System.out.println(Arrays.toString(splitter));
         commandList.add(Arrays.toString(splitter));
 
         return commandList;
