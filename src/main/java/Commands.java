@@ -250,8 +250,7 @@ public class Commands {
                 if (c.equals("\\") && i+1 < args.length()){
                     builder.append(args.charAt(i+1));
                     i++;
-                }
-                builder.append(c);
+                }else builder.append(c);
                 }
             else if (c.equals("'") && isInSingleQuotes) {
                 isInSingleQuotes = false;
@@ -260,8 +259,7 @@ public class Commands {
                 if (c.equals("\\") && i+1 < args.length()){
                     builder.append(args.charAt(i+1));
                     i++;
-                }
-                builder.append(c);
+                }else builder.append(c);
                 }
             else if (c.equals("\"") && isInDoubleQuotes) {
                 isInDoubleQuotes = false;
