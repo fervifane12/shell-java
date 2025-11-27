@@ -87,7 +87,64 @@ public class Commands {
     public static ArrayList<String> listArgs(String command, String args) {
         ArrayList<String> commandList = new ArrayList<>();
         commandList.add(command);
+        StringBuilder builder = new StringBuilder();
 
+
+        boolean isInSingleQuotes = false;
+        boolean isInDoubleQuotes = false;
+        boolean lastWasSpace = false;
+
+        for (int i = 0 ; i < args.length(); i++){
+            String c = String.valueOf(args.charAt(i));
+            if (!isInSingleQuotes && !isInDoubleQuotes){
+                if (c.equals("\\") && i+1 < args.length()){
+                    builder.append(args.charAt(i+1));
+                    i++;
+                }
+                else if (c.equals("'")){
+                    isInSingleQuotes = true;
+                }
+                else if (c.equals("\"")){
+                    isInDoubleQuotes = true;
+                }
+                else if (c.equals(" ") && lastWasSpace){
+                    continue;
+                }
+                else if (c.equals(" ")){
+                    lastWasSpace = true;
+                    builder.append(c);
+                }
+                else {
+                    builder.append(c);
+                }
+                if (!c.equals(" ") && lastWasSpace) {
+                    lastWasSpace = false;
+                }
+            }
+            else if (isInSingleQuotes && !c.equals("'")){
+                if (c.equals("\\") && i+1 < args.length()){
+                    builder.append(args.charAt(i+1));
+                    i++;
+                }else builder.append(c);
+            }
+            else if (c.equals("'") && isInSingleQuotes) {
+                isInSingleQuotes = false;
+            }
+            else if (isInDoubleQuotes && !c.equals("\"")) {
+                if (c.equals("\\") && i+1 < args.length()){
+                    builder.append(args.charAt(i+1));
+                    i++;
+                }else builder.append(c);
+            }
+            else if (c.equals("\"") && isInDoubleQuotes) {
+                isInDoubleQuotes = false;
+            }
+        }
+        String[] splitter = builder.toString().split("([^\\s'\"]+)");
+        commandList.add(Arrays.toString(splitter));
+
+        return commandList;
+/*
         if (args == null || args.isEmpty()) return commandList;
 
         Matcher matcher = Pattern.compile("'([^']*)'|\"([^\"]*)\"|(\\S+)").matcher(args);
@@ -98,8 +155,9 @@ public class Commands {
             if (arg == null) arg = matcher.group(3);
             commandList.add(arg);
         }
+*/
 
-        return commandList;
+
     }
 
     public static String typeCommand(String args) {
@@ -265,8 +323,8 @@ public class Commands {
                 isInDoubleQuotes = false;
             }
         }
-        System.out.println(builder);
 
+        System.out.println(builder);
         return builder.toString();
     }
 
