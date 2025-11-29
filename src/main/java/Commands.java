@@ -147,15 +147,16 @@ public class Commands {
                     i++;
                 }
 
+                if (!c.equals("\"")){
+                    argsBuilder.append(c);
+                    i++;
+                }
+
                 if (!c.equals("'")){
                     argsBuilder.append(c);
                     i++;
                 }
 
-                if (!c.equals("\"")){
-                    argsBuilder.append(c);
-                    i++;
-                }
             }
             if (!argsBuilder.isEmpty()){
                 commandList.add(argsBuilder.toString());
