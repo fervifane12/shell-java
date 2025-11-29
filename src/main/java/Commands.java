@@ -153,6 +153,7 @@ public class Commands {
                 argsBuilder.setLength(0);
             }
         }
+        System.out.println(commandList);
 
         return commandList;
     }
