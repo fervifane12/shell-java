@@ -138,6 +138,8 @@ public class Commands {
             }
             else if (c.equals("'") && isInSingleQuotes) {
                 isInSingleQuotes = false;
+                commandList.add(argsBuilder.toString());
+                argsBuilder.setLength(0);
             }
             else if (isInDoubleQuotes && !c.equals("\"")) {
                 if (c.equals("\\") && i+1 < args.length()){
