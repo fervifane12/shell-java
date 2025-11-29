@@ -141,7 +141,6 @@ public class Commands {
                     builder.append(args.charAt(i+1));
                     i+=2;
                 } else if (c.equals("'")) {
-                    i++;
                     commandList.add(builder.toString());
                     builder.setLength(0);
                     System.out.println(builder);
