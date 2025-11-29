@@ -143,7 +143,7 @@ public class Commands {
                 } else if (c.equals("'")) {
                     commandList.add(builder.toString());
                     builder.setLength(0);
-                    System.out.println(builder);
+                    System.out.println(builder + "*");
                     inSingle = false;
                 } else if (c.equals("\"")) {
                     commandList.add(builder.toString());
