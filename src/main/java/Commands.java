@@ -88,84 +88,49 @@ public class Commands {
     public static ArrayList<String> listArgs(String command, String args) {
         ArrayList<String> commandList = new ArrayList<>();
         commandList.add(command);
-
         StringBuilder builder = new StringBuilder();
-        StringBuilder argsBuilder = new StringBuilder();
 
-        boolean isInSingleQuotes = false;
-        boolean isInDoubleQuotes = false;
-        boolean lastWasSpace = false;
+        boolean inSingle = false;
+        boolean inDouble = false;
+        boolean escaping = false;
 
-        int i = 0;
-        String c = String.valueOf(args.charAt(i));
+        for (int i = 0; i < args.length(); i++) {
+            char c = args.charAt(i);
 
-        while (i < args.length()){
-            while (!isInSingleQuotes && !isInDoubleQuotes) {
-                if (c.equals("\\") && i + 1 < args.length()) {
-                    builder.append(args.charAt(i + 1));
-                    i++;
-                } else if (c.equals("'")) {
-                    isInSingleQuotes = true;
-                    i++;
-                } else if (c.equals("\"")) {
-                    isInDoubleQuotes = true;
-                    i++;
-                } else if (c.equals(" ") && lastWasSpace) {
-                    i++;
-                } else if (c.equals(" ")) {
-                    lastWasSpace = true;
-                    builder.append(c);
-                    i++;
-                } else {
-                    builder.append(c);
-                    i++;
-                }
-                if (!c.equals(" ") && lastWasSpace) {
-                    lastWasSpace = false;
-                }
-                c = String.valueOf(args.charAt(i));
-            }
-            if (!builder.isEmpty()){
-                commandList.add(builder.toString());
-                builder.setLength(0);
+            if (escaping) {
+                builder.append(c);
+                escaping = false;
+                continue;
             }
 
-
-            while (isInSingleQuotes || isInDoubleQuotes){
-
-                if (c.equals("'") && args.charAt(i-1)!='\\'){
-                    isInSingleQuotes = false;
-                    i++;
-                } else {
-                    argsBuilder.append(c);
-                    i++;
-                }
-
-                if (c.equals("\"") && args.charAt(i-1)!='\\'){
-                    isInDoubleQuotes = false;
-                    i++;
-                } else {
-                    argsBuilder.append(c);
-                    i++;
-                }
-
-                if (!c.equals("\"")){
-                    argsBuilder.append(c);
-                    i++;
-                }
-
-                if (!c.equals("'")){
-                    argsBuilder.append(c);
-                    i++;
-                }
-                c = String.valueOf(args.charAt(i));
-            }
-            if (!argsBuilder.isEmpty()){
-                commandList.add(argsBuilder.toString());
-                argsBuilder.setLength(0);
+            if (c == '\\') {
+                escaping = true;
+                continue;
             }
 
+            if (c == '\'' && !inDouble) {
+                inSingle = !inSingle;
+                continue;
+            }
+
+            if (c == '"' && !inSingle) {
+                inDouble = !inDouble;
+                continue;
+            }
+
+            if (c == ' ' && !inSingle && !inDouble) {
+                if (builder.length() > 0) {
+                    commandList.add(builder.toString());
+                    builder.setLength(0);
+                }
+                continue;
+            }
+
+            builder.append(c);
         }
+
+        if (!builder.isEmpty())
+            commandList.add(builder.toString());
 
         return commandList;
 
