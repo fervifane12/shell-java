@@ -146,7 +146,6 @@ public class Commands {
                     System.out.println(builder);
                     inSingle = false;
                 } else if (c.equals("\"")) {
-                    i++;
                     commandList.add(builder.toString());
                     builder.setLength(0);
                     inDouble = false;
