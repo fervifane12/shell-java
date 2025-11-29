@@ -158,7 +158,7 @@ public class Commands {
                     argsBuilder.append(c);
                     i++;
                 }
-
+                c = String.valueOf(args.charAt(i));
             }
             if (!argsBuilder.isEmpty()){
                 commandList.add(argsBuilder.toString());
