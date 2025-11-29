@@ -307,12 +307,8 @@ public class Commands {
                     lastWasSpace = false;
                 }
             }
-            else if (isInSingleQuotes && !c.equals("'")){
-                if (c.equals("\\") && i+1 < args.length()){
-                    builder.append(args.charAt(i+1));
-                    i++;
-                }else builder.append(c);
-                }
+            else if (isInSingleQuotes && !c.equals("'")) builder.append(c);
+                
             else if (c.equals("'") && isInSingleQuotes) {
                 isInSingleQuotes = false;
             }
