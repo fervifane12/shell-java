@@ -90,73 +90,84 @@ public class Commands {
         commandList.add(command);
 
         StringBuilder builder = new StringBuilder();
-        StringBuilder argsBuilder = new StringBuilder();
 
         boolean inSingle = false;
         boolean inDouble = false;
         boolean lastWasSpace = false;
 
-        for (int i = 0; i < args.length(); i++){
-            String c;
+        for (int i = 0; i < args.length(); ) {
+            char c = args.charAt(i);
+            
+            if (!inSingle && !inDouble) {
 
-            while (!inSingle && !inDouble){
-                c = String.valueOf(args.charAt(i));
-
-                if (!c.equals(" ") && lastWasSpace){
-                    lastWasSpace = false;
-                }
-
-                if (c.equals("\\") && args.length()> i+1){
-                    builder.append(args.charAt(i+1));
-                    i+=2;
-                } else if (c.equals("'")) {
-                    inSingle = true;
-                    i++;
-                    commandList.add(builder.toString());
-                    builder.setLength(0);
-                    break;
-                } else if (c.equals("\"")) {
-                    inDouble = true;
-                    i++;
-                    commandList.add(builder.toString());
-                    builder.setLength(0);
-                    break;
-                } else if (c.equals(" ") && lastWasSpace){
-                    i++;
-                } else if (c.equals(" ")) {
-                    builder.append(c);
+                if (c == ' '){
+                    if (!lastWasSpace && builder.length() > 0) {
+                        commandList.add(builder.toString());
+                        builder.setLength(0);
+                    }
                     lastWasSpace = true;
                     i++;
-                } else {
-                    builder.append(c);
-                    i++;
+                    continue;
                 }
-            }
 
-            while (inSingle || inDouble){
+                lastWasSpace = false;
 
-                c = String.valueOf(args.charAt(i));
+                if (c == '\'') {
+                    inSingle = true;
+                    i++;
+                    continue;
+                }
 
-                if (c.equals("\\") && args.length()> i+1 && inDouble){
+                if (c == '"') {
+                    inDouble = true;
+                    i++;
+                    continue;
+                }
+
+                if (c == '\\' && i+1 < args.length()) {
                     builder.append(args.charAt(i+1));
-                    i+=2;
-                } else if (c.equals("'")) {
-                    commandList.add(builder.toString());
-                    builder.setLength(0);
-                    System.out.println(builder + "*"+ c);
-                    inSingle = false;
-                } else if (c.equals("\"")) {
-                    commandList.add(builder.toString());
-                    builder.setLength(0);
-                    inDouble = false;
-                } else {
-                    builder.append(c);
-                    i++;
+                    i += 2;
+                    continue;
                 }
 
+                builder.append(c);
+                i++;
+                continue;
             }
 
+            if (inSingle) {
+                if (c == '\'') {
+                    inSingle = false;
+                    i++;
+                    continue;
+                }
+
+                // EVERYTHING is literal in single quotes!
+                builder.append(c);
+                i++;
+                continue;
+            }
+
+            if (inDouble) {
+                if (c == '"' && args.charAt(i-1) != '\\') {
+                    inDouble = false;
+                    i++;
+                    continue;
+                }
+
+                if (c == '\\' && i+1 < args.length()) {
+                    builder.append(args.charAt(i+1));
+                    i += 2;
+                    continue;
+                }
+
+                builder.append(c);
+                i++;
+            }
         }
+
+        if (builder.length() > 0)
+            commandList.add(builder.toString());
 
         return commandList;
 
