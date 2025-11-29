@@ -137,7 +137,7 @@ public class Commands {
 
                 c = String.valueOf(args.charAt(i));
 
-                if (c.equals("\\") && args.length()> i+1){
+                if (c.equals("\\") && args.length()> i+1 && inDouble){
                     builder.append(args.charAt(i+1));
                     i+=2;
                 } else if (c.equals("'")) {
@@ -308,7 +308,7 @@ public class Commands {
                 }
             }
             else if (isInSingleQuotes && !c.equals("'")) builder.append(c);
-                
+
             else if (c.equals("'") && isInSingleQuotes) {
                 isInSingleQuotes = false;
             }
