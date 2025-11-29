@@ -144,6 +144,7 @@ public class Commands {
                     i++;
                     commandList.add(builder.toString());
                     builder.setLength(0);
+                    System.out.println(builder);
                     inSingle = false;
                 } else if (c.equals("\"")) {
                     i++;
