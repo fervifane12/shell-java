@@ -97,7 +97,7 @@ public class Commands {
 
         for (int i = 0; i < args.length(); ) {
             char c = args.charAt(i);
-            
+
             if (!inSingle && !inDouble) {
 
                 if (c == ' '){
@@ -112,12 +112,14 @@ public class Commands {
 
                 lastWasSpace = false;
 
+                // ENTER single quotes ONLY if not in double quotes
                 if (c == '\'') {
                     inSingle = true;
                     i++;
                     continue;
                 }
 
+                // ENTER double quotes ONLY if not in single quotes
                 if (c == '"') {
                     inDouble = true;
                     i++;
@@ -149,20 +151,25 @@ public class Commands {
             }
 
             if (inDouble) {
-                if (c == '"' && args.charAt(i-1) != '\\') {
+
+                // end of double quotes
+                if (c == '"' && (i == 0 || args.charAt(i-1) != '\\')) {
                     inDouble = false;
                     i++;
                     continue;
                 }
 
+                // escape sequences allowed inside double quotes
                 if (c == '\\' && i+1 < args.length()) {
                     builder.append(args.charAt(i+1));
                     i += 2;
                     continue;
                 }
 
+                // EVERY OTHER CHARACTER IS LITERAL
                 builder.append(c);
                 i++;
+                continue;
             }
         }
 
