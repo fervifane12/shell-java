@@ -88,49 +88,71 @@ public class Commands {
     public static ArrayList<String> listArgs(String command, String args) {
         ArrayList<String> commandList = new ArrayList<>();
         commandList.add(command);
+
         StringBuilder builder = new StringBuilder();
+        StringBuilder argsBuilder = new StringBuilder();
 
-        boolean inSingle = false;
-        boolean inDouble = false;
-        boolean escaping = false;
+        boolean isInSingleQuotes = false;
+        boolean isInDoubleQuotes = false;
+        boolean lastWasSpace = false;
 
-        for (int i = 0; i < args.length(); i++) {
-            char c = args.charAt(i);
+        int i = 0;
+        String c = String.valueOf(args.charAt(i));
 
-            if (escaping) {
-                builder.append(c);
-                escaping = false;
-                continue;
-            }
-
-            if (c == '\\') {
-                escaping = true;
-                continue;
-            }
-
-            if (c == '\'' && !inDouble) {
-                inSingle = !inSingle;
-                continue;
-            }
-
-            if (c == '"' && !inSingle) {
-                inDouble = !inDouble;
-                continue;
-            }
-
-            if (c == ' ' && !inSingle && !inDouble) {
-                if (builder.length() > 0) {
-                    commandList.add(builder.toString());
-                    builder.setLength(0);
+        while (i < args.length()){
+            while (!isInSingleQuotes && !isInDoubleQuotes) {
+                if (c.equals("\\") && i + 1 < args.length()) {
+                    builder.append(args.charAt(i + 1));
+                    i++;
+                } else if (c.equals("'")) {
+                    isInSingleQuotes = true;
+                } else if (c.equals("\"")) {
+                    isInDoubleQuotes = true;
+                } else if (c.equals(" ") && lastWasSpace) {
+                    i++;
+                } else if (c.equals(" ")) {
+                    lastWasSpace = true;
+                    builder.append(c);
+                    i++;
+                } else {
+                    builder.append(c);
+                    i++;
                 }
-                continue;
+                if (!c.equals(" ") && lastWasSpace) {
+                    lastWasSpace = false;
+                }
+                c = String.valueOf(args.charAt(i));
             }
 
-            builder.append(c);
+            commandList.add(builder.toString());
+            builder.setLength(0);
+
+            while (isInSingleQuotes || isInDoubleQuotes){
+                if (!c.equals("'")){
+
+                }
+
+                if (!c.equals("\"")){
+
+                }
+
+                if (c.equals("'") && args.charAt(i-1)!='\\'){
+                    isInSingleQuotes = false;
+                } else {
+                    argsBuilder.append(c);
+                    i++;
+                }
+
+                if (c.equals("\"") && args.charAt(i-1)!='\\'){
+                    isInDoubleQuotes = false;
+                } else {
+                    argsBuilder.append(c);
+                    i++;
+                }
+            }
         }
 
-        if (!builder.isEmpty())
-            commandList.add(builder.toString());
+        System.out.println(commandList);
 
         return commandList;
 
