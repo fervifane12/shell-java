@@ -135,6 +135,7 @@ public class Commands {
 
                 if (c.equals("'") && args.charAt(i-1)!='\\'){
                     isInSingleQuotes = false;
+                    i++;
                 } else {
                     argsBuilder.append(c);
                     i++;
@@ -142,6 +143,7 @@ public class Commands {
 
                 if (c.equals("\"") && args.charAt(i-1)!='\\'){
                     isInDoubleQuotes = false;
+                    i++;
                 } else {
                     argsBuilder.append(c);
                     i++;
