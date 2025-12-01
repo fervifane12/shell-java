@@ -93,7 +93,7 @@ public class Commands {
         boolean inSingleQuote = false;
         boolean inDoubleQuote = false;
 
-        if (args.isEmpty()){
+        if (args == null){
             return commandList;
         }
 
