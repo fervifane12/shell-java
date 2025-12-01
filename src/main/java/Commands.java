@@ -89,92 +89,68 @@ public class Commands {
         ArrayList<String> commandList = new ArrayList<>();
         commandList.add(command);
 
-        StringBuilder builder = new StringBuilder();
+        StringBuilder currentArg = new StringBuilder();
+        boolean inSingleQuote = false;
+        boolean inDoubleQuote = false;
 
-        boolean inSingle = false;
-        boolean inDouble = false;
-        boolean lastWasSpace = false;
-
-        for (int i = 0; i < args.length(); ) {
+        for (int i = 0; i < args.length(); i++) {
             char c = args.charAt(i);
 
-            if (!inSingle && !inDouble) {
+            // Handle backslash (escape character)
+            if (c == '\\' && !inSingleQuote) {
+                // Inside double quotes or outside quotes
+                if (i + 1 < args.length()) {
+                    char nextChar = args.charAt(i + 1);
 
-                if (c == ' '){
-                    if (!lastWasSpace && builder.length() > 0) {
-                        commandList.add(builder.toString());
-                        builder.setLength(0);
+                    // In double quotes, only escape special characters
+                    if (inDoubleQuote) {
+                        if (nextChar == '"' || nextChar == '\\' || nextChar == '$' || nextChar == '`') {
+                            currentArg.append(nextChar);
+                            i++; // Skip the escaped character
+                        } else {
+                            currentArg.append(c); // Keep the backslash
+                            currentArg.append(nextChar);
+                            i++;
+                        }
+                    } else {
+                        // Outside quotes, escape next character
+                        currentArg.append(nextChar);
+                        i++;
                     }
-                    lastWasSpace = true;
-                    i++;
-                    continue;
+                } else {
+                    currentArg.append(c);
                 }
-
-                lastWasSpace = false;
-
-                // ENTER single quotes ONLY if not in double quotes
-                if (c == '\'') {
-                    inSingle = true;
-                    i++;
-                    continue;
-                }
-
-                // ENTER double quotes ONLY if not in single quotes
-                if (c == '"') {
-                    inDouble = true;
-                    i++;
-                    continue;
-                }
-
-                if (c == '\\' && i+1 < args.length()) {
-                    builder.append(args.charAt(i+1));
-                    i += 2;
-                    continue;
-                }
-
-                builder.append(c);
-                i++;
                 continue;
             }
 
-            if (inSingle) {
-                if (c == '\'') {
-                    inSingle = false;
-                    i++;
-                    continue;
-                }
-
-                // EVERYTHING is literal in single quotes!
-                builder.append(c);
-                i++;
+            // Handle quotes
+            if (c == '\'' && !inDoubleQuote) {
+                inSingleQuote = !inSingleQuote;
                 continue;
             }
 
-            if (inDouble) {
-
-                // end of double quotes
-                if (c == '"' && (i == 0 || args.charAt(i-1) != '\\')) {
-                    inDouble = false;
-                    i++;
-                    continue;
-                }
-
-                // escape sequences allowed inside double quotes
-                if (c == '\\' && i+1 < args.length()) {
-                    builder.append(args.charAt(i+1));
-                    i += 2;
-                    continue;
-                }
-
-                // EVERY OTHER CHARACTER IS LITERAL
-                builder.append(c);
-                i++;
+            if (c == '"' && !inSingleQuote) {
+                inDoubleQuote = !inDoubleQuote;
                 continue;
             }
+
+            // Handle space (end of argument)
+            if (c == ' ' && !inSingleQuote && !inDoubleQuote) {
+                if (currentArg.length() > 0) {
+                    commandList.add(currentArg.toString());
+                    currentArg.setLength(0);
+                }
+                continue;
+            }
+
+            // For all other cases, just append the character
+            currentArg.append(c);
         }
 
-        if (builder.length() > 0)
-            commandList.add(builder.toString());
+        // Add the last argument
+        if (currentArg.length() > 0) {
+            commandList.add(currentArg.toString());
+        }
 
         return commandList;
 
