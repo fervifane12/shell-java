@@ -93,27 +93,30 @@ public class Commands {
         boolean inSingleQuote = false;
         boolean inDoubleQuote = false;
 
+        if (args.isEmpty()){
+            return commandList;
+        }
+
         for (int i = 0; i < args.length(); i++) {
             char c = args.charAt(i);
 
-            // Handle backslash (escape character)
+
             if (c == '\\' && !inSingleQuote) {
-                // Inside double quotes or outside quotes
+
                 if (i + 1 < args.length()) {
                     char nextChar = args.charAt(i + 1);
 
-                    // In double quotes, only escape special characters
                     if (inDoubleQuote) {
-                        if (nextChar == '"' || nextChar == '\\' || nextChar == '$' || nextChar == '`') {
+                        if (nextChar == '"' || nextChar == '\\') {
                             currentArg.append(nextChar);
-                            i++; // Skip the escaped character
+                            i++;
                         } else {
-                            currentArg.append(c); // Keep the backslash
+                            currentArg.append(c);
                             currentArg.append(nextChar);
                             i++;
                         }
                     } else {
-                        // Outside quotes, escape next character
+
                         currentArg.append(nextChar);
                         i++;
                     }
@@ -123,7 +126,7 @@ public class Commands {
                 continue;
             }
 
-            // Handle quotes
+
             if (c == '\'' && !inDoubleQuote) {
                 inSingleQuote = !inSingleQuote;
                 continue;
@@ -134,7 +137,7 @@ public class Commands {
                 continue;
             }
 
-            // Handle space (end of argument)
+
             if (c == ' ' && !inSingleQuote && !inDoubleQuote) {
                 if (currentArg.length() > 0) {
                     commandList.add(currentArg.toString());
@@ -143,11 +146,10 @@ public class Commands {
                 continue;
             }
 
-            // For all other cases, just append the character
+
             currentArg.append(c);
         }
 
-        // Add the last argument
         if (currentArg.length() > 0) {
             commandList.add(currentArg.toString());
         }
