@@ -99,8 +99,7 @@ public class Commands {
 
         for (int i = 0; i < args.length(); i++) {
             char c = args.charAt(i);
-
-
+            
             if (c == '\\' && !inSingleQuote) {
 
                 if (i + 1 < args.length()) {
